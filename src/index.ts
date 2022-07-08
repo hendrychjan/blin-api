@@ -13,6 +13,7 @@ if (process.env.NODE_ENV === "production") {
 }
 require("./startup/api")(app);
 require("./startup/router")(app);
+require("./startup/db")();
 
 // Start the http server
 const server = http.listen(port, () => {
