@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Response } from "express";
 import { auth } from "../middleware/auth";
 import Category, { TCategory } from "../models/category";
 const router = express.Router();
@@ -15,7 +15,7 @@ router.post("/", [auth], async (req: any, res: Response) => {
 // @desc    Get all user's categories
 // @access  Private
 router.get("/", [auth], async (req: any, res: Response) => {
-  const categories = await Category.getAll(req.user._id);
+  const categories = await Category.getAllCategories(req.user._id);
   res.status(200).send(categories);
 });
 
@@ -25,6 +25,14 @@ router.get("/", [auth], async (req: any, res: Response) => {
 router.put("/:id", [auth], async (req: any, res: Response) => {
   const updatedCategory = await Category.updateCategory(req.params.id, req.body, req.user._id);
   res.status(200).send(updatedCategory);
+});
+
+// @route   DELETE categories/:id
+// @desc    Delete a category
+// @access  Private
+router.delete("/:id", [auth], async (req: any, res: Response) => {
+  const deletedCategory = await Category.deleteCategory(req.params.id, req.user._id);
+  res.status(200).send(deletedCategory);
 });
 
 module.exports = router;

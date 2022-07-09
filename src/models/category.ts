@@ -5,6 +5,7 @@ const categorySchema = new Schema({
   name: String,
   description: String,
   user: Types.ObjectId,
+  color: String,
 });
 
 // Instance methods for Category
@@ -14,8 +15,9 @@ interface ICategoryMethods {}
 interface IStaticMethods {
   checkIfNameIsUnique(categoryName: string, userId: any): Promise<boolean>;
   createNew(category: TCategory): Promise<any>;
-  getAll(userId: any): Promise<any>;
-  updateCategory(id: typeof Types.ObjectId, update: TCategory, userId: any): Promise<any>
+  getAllCategories(userId: any): Promise<any>;
+  updateCategory(id: typeof Types.ObjectId, update: TCategory, userId: any): Promise<any>;
+  deleteCategory(id: typeof Types.ObjectId, userId: any): Promise<any>;
 }
 
 // Bussiness logic methods
@@ -55,8 +57,8 @@ categorySchema.static(
 
 // Get all categories
 categorySchema.static(
-  "getAll",
-  async function getAll(userId: any): Promise<Array<TCategory>> {
+  "getAllCategories",
+  async function getAllCategories(userId: any): Promise<Array<TCategory>> {
     const categories = await Category.find({ user: userId });
     return categories;
   }
@@ -72,6 +74,15 @@ categorySchema.static(
       { new: true }
     );
     return updatedCategory;
+  }
+);
+
+// Delete a category
+categorySchema.static(
+  "deleteCategory",
+  async function deleteCategory(id: typeof Types.ObjectId, userId: any): Promise<any> {
+    const deletedCategory = await Category.findOneAndDelete({ _id: id, user: userId });
+    return deletedCategory;
   }
 );
 
