@@ -17,7 +17,7 @@ require("./startup/db")();
 
 // Start the http server
 const server = http.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+  console.log(`...Server listening on port ${port}`);
 });
 
 module.exports = server;
