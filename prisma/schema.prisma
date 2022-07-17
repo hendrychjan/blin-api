@@ -1,11 +1,36 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DB_URL")
+}
+
+model User {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  name       String     @unique
+  password   String
+  categories Category[]
+  expenses   Expense[]
+}
+
+model Category {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  color       String
+  user        User      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId      String    @db.ObjectId
+  expenses    Expense[]
+}
+
+model Expense {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  user        User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId      String   @db.ObjectId
+  category    Category @relation(references: [id], fields: [categoryId])
+  categoryId  String   @db.ObjectId
 }

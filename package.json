@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/hendrychjan/blin-api#readme",
   "dependencies": {
+    "@prisma/client": "^4.0.0",
     "@types/express": "^4.17.13",
     "@types/node": "^18.0.3",
     "bcrypt": "^5.0.1",
