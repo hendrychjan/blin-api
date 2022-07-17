@@ -1,5 +1,5 @@
 import express from "express";
-import User from "../models/user";
+import UserService, { UserPayload } from "../services/userService";
 
 const router = express.Router();
 
@@ -8,10 +8,10 @@ const router = express.Router();
 // @access  Public
 router.post("/", async (req, res) => {
   try {
-    const token = await User.login(req.body.name, req.body.password);
+    const token: string = await UserService.login(req.body as UserPayload);
     res.status(200).send(token);
-  } catch (ex: any) {
-    res.status(400).send(ex.message);
+  } catch (e) {
+    res.status(400).send(e);
   }
 });
 

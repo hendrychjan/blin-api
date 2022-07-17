@@ -1,13 +1,17 @@
 import express from "express";
-import User, {UserType} from "../models/user";
+import UserService, { UserPayload } from "../services/userService";
 const router = express.Router();
 
 // @route   POST users/new
 // @desc    Create a new user
 // @access  Public
 router.post("/new", async (req, res) => {
-  const token = await User.createNew(req.body as UserType);
-  res.send(token);
+  try {
+    const token = await UserService.register(req.body as UserPayload);
+    res.status(200).send(token);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 module.exports = router;
