@@ -1,38 +1,61 @@
 import express, { Response } from "express";
 import { auth } from "../middleware/auth";
-import Category, { TCategory } from "../models/category";
+import CategoryService, { CategoryPayload } from "../services/categoryService";
 const router = express.Router();
 
 // @route   POST categories
 // @desc    Create a new category
 // @access  Private
 router.post("/", [auth], async (req: any, res: Response) => {
-  const category = await Category.createNew({...req.body, user: req.user._id} as TCategory);
-  res.status(201).send(category);
+  try {
+    const category = await CategoryService.createNew(req.body as CategoryPayload, req.user);
+    res.status(201).send(category);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // @route   GET categories
 // @desc    Get all user's categories
 // @access  Private
 router.get("/", [auth], async (req: any, res: Response) => {
-  const categories = await Category.getAllCategories(req.user._id);
-  res.status(200).send(categories);
+  try {
+    const categories = await CategoryService.getAll(req.user);
+    res.status(200).send(categories);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // @route   PUT categories/:id
 // @desc    Update a category
 // @access  Private
 router.put("/:id", [auth], async (req: any, res: Response) => {
-  const updatedCategory = await Category.updateCategory(req.params.id, req.body, req.user._id);
-  res.status(200).send(updatedCategory);
+  try {
+    const updatedCategory = await CategoryService.update(
+      req.params.id,
+      req.body as CategoryPayload,
+      req.user
+    );
+    res.status(200).send(updatedCategory);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // @route   DELETE categories/:id
 // @desc    Delete a category
 // @access  Private
 router.delete("/:id", [auth], async (req: any, res: Response) => {
-  const deletedCategory = await Category.deleteCategory(req.params.id, req.user._id);
-  res.status(200).send(deletedCategory);
+  try {
+    const deletedCategory = await CategoryService.delete(
+      req.params.id,
+      req.user
+    );
+    res.status(200).send(deletedCategory);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 module.exports = router;
