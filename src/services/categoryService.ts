@@ -2,7 +2,7 @@ import { User, Category, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export interface CategoryPayload {
-  name: string;
+  title: string;
   description?: string;
   color: string;
 }
@@ -15,7 +15,7 @@ export default class CategoryService {
     // Check if the name is unique for a given user
     const duplicateCategory = await prisma.category.findFirst({
       where: {
-        name: category.name,
+        title: category.title,
         user: { id: user.id },
       },
     });
@@ -56,7 +56,7 @@ export default class CategoryService {
     // Check if the name is unique for a given user
     const duplicateCategory = await prisma.category.findFirst({
       where: {
-        name: category.name,
+        title: category.title,
         user: { id: user.id },
       },
     });
