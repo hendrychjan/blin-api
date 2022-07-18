@@ -8,8 +8,10 @@ export interface CategoryPayload {
 }
 
 export default class CategoryService {
-
-  static async createNew(category: CategoryPayload, user: User): Promise<Category> {
+  static async createNew(
+    category: CategoryPayload,
+    user: User
+  ): Promise<Category> {
     // Check if the name is unique for a given user
     const duplicateCategory = await prisma.category.findFirst({
       where: {
@@ -25,10 +27,8 @@ export default class CategoryService {
     // Save the category to db
     const newCategory = await prisma.category.create({
       data: {
-        name: category.name,
-        description: category.description,
+        ...category,
         user: { connect: { id: user.id } },
-        color: category.color,
       },
     });
 
@@ -48,7 +48,11 @@ export default class CategoryService {
     return categories;
   }
 
-  static async update(id: string, category: CategoryPayload, user: User): Promise<Category> {
+  static async update(
+    id: string,
+    category: CategoryPayload,
+    user: User
+  ): Promise<Category> {
     // Check if the name is unique for a given user
     const duplicateCategory = await prisma.category.findFirst({
       where: {
@@ -64,18 +68,14 @@ export default class CategoryService {
     // Update the category in db
     const updatedCategory = await prisma.category.update({
       where: { id },
-      data: {
-        name: category.name,
-        description: category.description,
-        color: category.color,
-      },
+      data: { ...category },
     });
 
     // Return the updated category
     return updatedCategory;
   }
 
-  static async delete(id: string, user: User): Promise<Category> {
+  static async delete(id: string): Promise<Category> {
     // Delete the category from db
     const deletedCategory = await prisma.category.delete({
       where: { id },

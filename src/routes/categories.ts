@@ -8,7 +8,10 @@ const router = express.Router();
 // @access  Private
 router.post("/", [auth], async (req: any, res: Response) => {
   try {
-    const category = await CategoryService.createNew(req.body as CategoryPayload, req.user);
+    const category = await CategoryService.createNew(
+      req.body as CategoryPayload,
+      req.user
+    );
     res.status(201).send(category);
   } catch (e) {
     res.status(400).send(e);
@@ -48,10 +51,7 @@ router.put("/:id", [auth], async (req: any, res: Response) => {
 // @access  Private
 router.delete("/:id", [auth], async (req: any, res: Response) => {
   try {
-    const deletedCategory = await CategoryService.delete(
-      req.params.id,
-      req.user
-    );
+    const deletedCategory = await CategoryService.delete(req.params.id);
     res.status(200).send(deletedCategory);
   } catch (e) {
     res.status(400).send(e);

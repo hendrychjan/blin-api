@@ -29,6 +29,8 @@ model Expense {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
+  cost        Int
+  date        DateTime
   user        User     @relation(references: [id], fields: [userId], onDelete: Cascade)
   userId      String   @db.ObjectId
   category    Category @relation(references: [id], fields: [categoryId])
