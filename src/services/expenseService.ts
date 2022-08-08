@@ -1,6 +1,6 @@
-import { User, Category, Expense, PrismaClient } from "@prisma/client";
+import { User, Expense, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-import * as _ from "lodash";
+import _ from "lodash";
 
 export interface ExpensePayload {
   title: string;
