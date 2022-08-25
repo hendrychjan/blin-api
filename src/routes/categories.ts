@@ -26,6 +26,7 @@ router.get("/", [auth], async (req: any, res: Response) => {
     const categories = await CategoryService.getAll(req.user);
     res.status(200).send(categories);
   } catch (e) {
+    console.log(e);
     res.status(400).send(e);
   }
 });

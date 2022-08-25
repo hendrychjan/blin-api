@@ -16,10 +16,12 @@ export default class CategoryService {
     // Check if the name is unique for a given user
     const duplicateCategory = await prisma.category.findFirst({
       where: {
-        title: category.title,
+        title: { equals: category.title },
         user: { id: user.id },
       },
     });
+
+    console.log(duplicateCategory);
 
     if (duplicateCategory) {
       throw "Category name is not unique";
