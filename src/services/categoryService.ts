@@ -63,7 +63,8 @@ export default class CategoryService {
     });
 
     if (duplicateCategory) {
-      throw "Category name is not unique";
+      // Check aginst the current category
+      if (duplicateCategory.id !== id) throw "Category name is not unique";
     }
 
     // Update the category in db
